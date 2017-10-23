@@ -10,6 +10,22 @@ const logger = require('morgan');
 app.use(logger('dev'));
 app.use(jsonParser());
 
+const mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/sandbox");
+
+const db = mongoose.connection;
+
+db.on('error', (err) => {
+  console.error("connection error:", err);
+});
+
+db.once("open", () => {
+  console.log("db connection successful");
+  //All db communication goes here
+});
+
+
 app.use('/questions', routes);
 
 app.use((req, res, next) => {
